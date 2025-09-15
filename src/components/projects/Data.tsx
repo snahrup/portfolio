@@ -198,7 +198,9 @@ export const data = PROJECT_CONTENT.map((project, index) => ({
     <div className="space-y-6">
       <div>
         <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-        <p className="text-sm text-muted-foreground mb-4">{project.date}</p>
+        {project.date && (
+          <p className="text-sm text-muted-foreground mb-4">{project.date}</p>
+        )}
         <p className="text-muted-foreground leading-relaxed">
           {project.description}
         </p>
