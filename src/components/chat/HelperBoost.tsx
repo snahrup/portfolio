@@ -56,6 +56,7 @@ const specialQuestions = [
   'Who are you?',
   'Can I see your resume?',
   'What projects are you most proud of?',
+  'Tell me about your LinkedIn Job Tracker with AI scoring',
   'What are your skills?',
   'How can I reach you?',
   "What's the craziest thing you've ever done?",
@@ -89,7 +90,11 @@ const questionsByCategory = [
     id: 'projects',
     name: 'Projects',
     icon: CodeIcon,
-    questions: ['What projects are you most proud of?'],
+    questions: [
+      'What projects are you most proud of?',
+      'Tell me about your LinkedIn Job Tracker with AI scoring',
+      'Show me your Strainprint ML Pipeline project',
+    ],
   },
   {
     id: 'skills',
