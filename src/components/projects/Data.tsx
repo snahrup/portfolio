@@ -5,6 +5,38 @@ import { Separator } from '@/components/ui/separator';
 // Steve Nahrup's projects
 const PROJECT_CONTENT = [
   {
+    title: 'LinkedIn Job Tracker - AI-Powered Job Search Assistant',
+    description:
+      'Built an intelligent job application tracker that automatically syncs with Gmail and uses AI to score job matches. It\'s like having a personal job search assistant that never forgets. The system uses GPT-4 to extract job details from emails, compares requirements to your actual resume, and scores each opportunity 0-100%. Tracks which companies viewed your application, average response times, and provides actionable insights. What used to take hours in spreadsheets now happens automatically with AI-powered insights.',
+    techStack: [
+      'React',
+      'TypeScript',
+      'OpenAI GPT-4',
+      'Gmail API',
+      'Tailwind CSS',
+      'Zustand',
+      'Vite',
+    ],
+    date: '2025',
+    metrics: [
+      '100% automated email parsing',
+      'AI match scoring in < 1 second',
+      '4-dimensional scoring (skills, experience, location, salary)',
+      'Real-time status tracking',
+      'Zero manual data entry required',
+    ],
+    links: [
+      {
+        name: 'GitHub',
+        url: 'https://github.com/snahrup/linkedin-job-tracker',
+      },
+      {
+        name: 'Live Demo',
+        url: '#',
+      },
+    ],
+  },
+  {
     title: 'Cannabis Treatment Optimizer - Helping Patients Find What Works',
     description:
       'Built an AI system that helps medical cannabis patients find the right treatment faster. Think of it like Netflix recommendations, but for medical treatments. The system learned from 1.4 million real patient experiences to predict which cannabis strains will work best for each person\'s specific symptoms. Before this, patients had to try dozens of products through trial and error - now they get personalized recommendations instantly. The result? Patients found effective treatments 25% more often and avoided products that wouldn\'t help them.',
