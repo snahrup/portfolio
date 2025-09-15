@@ -6,19 +6,19 @@ import { Photos, PhotoItem } from './photos';
 const Sports = () => {
   const sportPhotos: PhotoItem[] = [
     {
-      src: '/podium.jpg',
-      alt: 'On the podium after a mountain bike race',
-      caption: 'Celebrating a podium finish 3rd at the famous Roc d\'Azur',
+      src: '/outdoor-activity.jpg',
+      alt: 'Outdoor activities in Charleston',
+      caption: 'Exploring the beautiful outdoors around Charleston, SC',
     },
     {
-      src: '/levens.JPG',
-      alt: 'Racing in Levens',
-      caption: 'Competing in the mountain bike world cup in Levens with some clean conditions ahah',
+      src: '/team-event.jpg',
+      alt: 'Team building event',
+      caption: 'Leading a team building activity - leadership extends beyond the boardroom',
     },
     {
-      src: '/marseille.JPG',
-      alt: 'Racing in Marseille',
-      caption: 'Pushing limits at the Marseille World cup',
+      src: '/conference.jpg',
+      alt: 'Speaking at conference',
+      caption: 'Presenting on AI in Business Intelligence at a tech conference',
     },
     {
       src: '/transmo.JPG',

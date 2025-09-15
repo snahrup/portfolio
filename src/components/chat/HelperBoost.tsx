@@ -52,7 +52,7 @@ const questionConfig = [
 
 // Helper drawer data
 const specialQuestions = [
-  'Mountain Bike you said?? Show me!',
+  'What are your thoughts on AI in BI?',
   'Who are you?',
   'Can I see your resume?',
   'What projects are you most proud of?',
@@ -102,7 +102,8 @@ const questionsByCategory = [
     icon: GraduationCapIcon,
     questions: [
       'What are your skills?',
-      'How was your experience at École 42?',
+      'Tell me about your Power BI expertise',
+      'What AI technologies do you work with?',
     ],
   },
   {
@@ -110,7 +111,7 @@ const questionsByCategory = [
     name: 'Fun',
     icon: PartyPopper,
     questions: [
-      'Mountain Bike you said?? Show me!',
+      'What do you do outside of work?',
       "What's the craziest thing you've ever done?",
       'Mac or PC?',
       'What are you certain about that 90% get wrong?',
