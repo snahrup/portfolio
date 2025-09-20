@@ -1,11 +1,6 @@
 import { tool } from 'ai';
 import { z } from 'zod';
-import { 
-  extractSkillsFromJob, 
-  calculateMatchScore, 
-  STEVE_SKILLS,
-  STEVE_EXPERIENCE 
-} from '@/lib/skills-extractor';
+import { calculateDetailedMatch } from './analyzeJobFitAgents';
 
 // Job description detection patterns
 export const JOB_PATTERNS = {
@@ -30,30 +25,60 @@ export const JOB_PATTERNS = {
 export function isJobDescription(text: string): boolean {
   const lowerText = text.toLowerCase();
   
-  // Check for URL patterns
   const hasJobUrl = JOB_PATTERNS.urlPatterns.some(pattern => 
     lowerText.includes(pattern)
   );
   
-  // Check for multiple job-related keywords
   const keywordMatches = JOB_PATTERNS.keywords.filter(keyword => 
     lowerText.includes(keyword)
   ).length;
   
-  // Check for common job posting phrases
   const hasPhrases = JOB_PATTERNS.phrases.some(phrase => 
     lowerText.includes(phrase)
   );
   
-  // Consider it a job description if:
-  // - It has a job URL, OR
-  // - It has 2+ keywords, OR  
-  // - It has job posting phrases
   return hasJobUrl || keywordMatches >= 2 || hasPhrases;
 }
 
+// Extract required skills from job description
+function extractRequiredSkills(jobText: string): string[] {
+  const skills = [];
+  const lowerText = jobText.toLowerCase();
+  
+  // Common technical skills to look for
+  const techSkills = [
+    'Python', 'JavaScript', 'TypeScript', 'Java', 'C#', 'C++', 'Go', 'Rust',
+    'React', 'Angular', 'Vue', 'Next.js', 'Node.js', 'Express', 'Django', 'Flask',
+    'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform',
+    'SQL', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Elasticsearch',
+    'Power BI', 'Tableau', 'Looker', 'Databricks', 'Snowflake',
+    'Git', 'CI/CD', 'Jenkins', 'GitHub Actions', 'GitLab',
+    'Airflow', 'Spark', 'Kafka', 'dbt', 'Fivetran',
+    'Machine Learning', 'Deep Learning', 'TensorFlow', 'PyTorch',
+    'Pandas', 'NumPy', 'Scikit-learn', 'LangChain', 'OpenAI'
+  ];
+  
+  techSkills.forEach(skill => {
+    if (lowerText.includes(skill.toLowerCase())) {
+      skills.push(skill);
+    }
+  });
+  
+  // Also look for patterns like "X years of Y experience"
+  const yearsPattern = /(\d+)\+?\s*years?\s+(?:of\s+)?(?:experience\s+)?(?:with\s+)?([a-zA-Z\s]+)/gi;
+  let match;
+  while ((match = yearsPattern.exec(jobText)) !== null) {
+    const skill = match[2].trim();
+    if (!skills.includes(skill) && skill.length < 30) {
+      skills.push(skill);
+    }
+  }
+  
+  return skills;
+}
+
 export const analyzeJobFit = tool({
-  description: 'Analyze how well Steve fits a job description',
+  description: 'Analyze how well Steve fits a job description with realistic scoring',
   parameters: z.object({
     jobDescription: z.string().describe('The full job description text or URL'),
     isUrl: z.boolean().optional().describe('Whether the input is a URL')
@@ -61,7 +86,7 @@ export const analyzeJobFit = tool({
   execute: async ({ jobDescription, isUrl }) => {
     let jobContent = jobDescription;
     
-    // If it's a URL, fetch via our API endpoint (avoids CORS)
+    // URL handling (if needed)
     if (isUrl || jobDescription.startsWith('http')) {
       try {
         const response = await fetch('/api/fetch-job', {
@@ -71,7 +96,6 @@ export const analyzeJobFit = tool({
         });
         
         const data = await response.json();
-        
         if (data.error) {
           return {
             type: 'job_analysis',
@@ -91,177 +115,185 @@ export const analyzeJobFit = tool({
       }
     }
     
-    // Extract skills from job description
-    const requiredSkills = extractSkillsFromJob(jobContent);
-    const overallScore = calculateMatchScore(requiredSkills, STEVE_SKILLS);
+    // Extract required skills
+    const requiredSkills = extractRequiredSkills(jobContent);
     
-    // Build skills match details
-    const skillsMatch = [];
-    let topMatches = [];
-    let gaps = [];
-    
-    // Check each skill category
-    Object.entries(requiredSkills).forEach(([category, skills]) => {
-      (skills as string[]).forEach(skill => {
-        const hasSkill = STEVE_SKILLS[category as keyof typeof STEVE_SKILLS]
-          .some(s => s.toLowerCase() === skill.toLowerCase());
-        
-        if (hasSkill) {
-          topMatches.push({
-            name: skill,
-            category,
-            strength: 100
-          });
-        } else {
-          // Check if similar skill exists
-          let similarFound = false;
-          Object.entries(STEVE_SKILLS).forEach(([cat, steveSkills]) => {
-            if (steveSkills.some(s => 
-              s.toLowerCase().includes(skill.toLowerCase()) || 
-              skill.toLowerCase().includes(s.toLowerCase())
-            )) {
-              topMatches.push({
-                name: skill,
-                category,
-                strength: 70,
-                note: `Similar: ${steveSkills.find(s => 
-                  s.toLowerCase().includes(skill.toLowerCase()) || 
-                  skill.toLowerCase().includes(s.toLowerCase())
-                )}`
-              });
-              similarFound = true;
-            }
-          });
-          
-          if (!similarFound) {
-            gaps.push({
-              name: skill,
-              category,
-              severity: 'medium'
-            });
-          }
-        }
-      });
+    // Calculate detailed matches with realistic scores
+    const skillMatches = requiredSkills.map(skill => {
+      const matchScore = calculateDetailedMatch(skill, 'general');
+      return {
+        name: skill,
+        score: matchScore,
+        category: determineCategory(skill)
+      };
     });
     
-    // Get top 5 skills for display
-    const top5Skills = topMatches.slice(0, 5).map(skill => ({
+    // Sort by match score
+    skillMatches.sort((a, b) => b.score - a.score);
+    
+    // Categorize matches
+    const strongMatches = skillMatches.filter(s => s.score >= 70);
+    const partialMatches = skillMatches.filter(s => s.score >= 40 && s.score < 70);
+    const gaps = skillMatches.filter(s => s.score < 40);
+    
+    // Calculate realistic overall score
+    let overallScore = 0;
+    if (skillMatches.length > 0) {
+      const weights = {
+        strong: 1.0,
+        partial: 0.5,
+        gap: 0.1
+      };
+      
+      const weightedSum = 
+        strongMatches.reduce((sum, s) => sum + s.score * weights.strong, 0) +
+        partialMatches.reduce((sum, s) => sum + s.score * weights.partial, 0) +
+        gaps.reduce((sum, s) => sum + s.score * weights.gap, 0);
+      
+      const totalWeight = 
+        strongMatches.length * weights.strong +
+        partialMatches.length * weights.partial +
+        gaps.length * weights.gap;
+      
+      overallScore = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;
+      
+      // Apply reality check - rarely above 85%
+      if (overallScore > 85) {
+        overallScore = 85 + Math.round((overallScore - 85) * 0.3);
+      }
+    }
+    
+    // Prepare top skills for display (showing realistic percentages)
+    const topSkills = skillMatches.slice(0, 5).map(skill => ({
       name: skill.name,
       required: 100,
-      mine: skill.strength  // Changed from 'yours' to 'mine'
+      mine: skill.score
     }));
     
-    // Calculate category scores for radar
+    // Build radar data with realistic scores
     const radarData = [
       { 
         category: 'Technical', 
-        value: calculateCategoryMatch(requiredSkills.languages.concat(requiredSkills.frameworks)),
+        value: calculateCategoryScore(skillMatches, 'technical'),
         fullMark: 100
       },
       { 
         category: 'Experience', 
-        value: jobDescription.toLowerCase().includes('years') ? 85 : 100,
+        value: calculateExperienceScore(jobContent),
         fullMark: 100
       },
       { 
         category: 'Domain', 
-        value: calculateCategoryMatch(requiredSkills.domains),
+        value: calculateCategoryScore(skillMatches, 'domain'),
         fullMark: 100
       },
       { 
         category: 'Tools', 
-        value: calculateCategoryMatch(requiredSkills.tools),
+        value: calculateCategoryScore(skillMatches, 'tools'),
         fullMark: 100
       },
       { 
         category: 'Cloud/Data', 
-        value: calculateCategoryMatch(requiredSkills.cloud.concat(requiredSkills.databases)),
+        value: calculateCategoryScore(skillMatches, 'cloud'),
         fullMark: 100
       },
       { 
         category: 'Soft Skills', 
-        value: 90, // Steve has strong leadership and communication
+        value: 75, // Default for soft skills
         fullMark: 100
       }
     ];
     
-    // Generate recommendation
-    let recommendation = '';
-    if (overallScore >= 80) {
-      recommendation = "Excellent fit! This role aligns strongly with my experience. I'd love to discuss how my expertise in " +
-        topMatches[0]?.name + " and " + topMatches[1]?.name + " can contribute to your team.";
-    } else if (overallScore >= 60) {
-      recommendation = "Good alignment with growth potential. My strong background in " +
-        topMatches[0]?.name + " positions me well for this role, and I'm eager to expand my skills in " +
-        gaps[0]?.name + ".";
-    } else if (overallScore >= 40) {
-      recommendation = "Partial match with transferable skills. While I'd need to develop expertise in " +
-        gaps[0]?.name + ", my experience in " + STEVE_SKILLS.domains[0] + 
-        " and proven ability to learn quickly could make this work.";
-    } else {
-      recommendation = "Limited alignment. This role requires significant expertise in " +
-        gaps[0]?.name + " and " + gaps[1]?.name + 
-        " that I haven't developed yet. You may want to consider candidates with more direct experience in these areas.";
-    }
+    // Generate recommendation based on realistic score
+    const recommendation = generateRecommendation(overallScore, strongMatches, gaps);
     
     // Identify relevant projects
-    const relevantProjects = identifyRelevantProjects(requiredSkills);
+    const relevantProjects = identifyRelevantProjects(skillMatches);
     
     return {
       type: 'job_analysis',
       overall_match: overallScore,
-      skills_match: top5Skills,
+      skills_match: topSkills,
       radar_data: radarData,
-      gaps: gaps.slice(0, 3),
-      highlights: topMatches.slice(0, 3),
+      gaps: gaps.slice(0, 3).map(g => ({
+        name: g.name,
+        category: g.category,
+        severity: g.score < 20 ? 'high' : 'medium'
+      })),
+      highlights: strongMatches.slice(0, 3).map(s => ({
+        name: s.name,
+        category: s.category,
+        strength: s.score,
+        note: s.score === 100 ? 'Expert level' : s.score >= 80 ? 'Strong proficiency' : 'Good experience'
+      })),
       recommendation,
       relevant_projects: relevantProjects
     };
   }
 });
 
-function calculateCategoryMatch(skills: string[]): number {
-  if (skills.length === 0) return 100;
+function determineCategory(skill: string): string {
+  const categories = {
+    technical: ['Python', 'JavaScript', 'TypeScript', 'Java', 'C#', 'SQL'],
+    frameworks: ['React', 'Angular', 'Vue', 'Django', 'Flask', 'Express'],
+    cloud: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes'],
+    data: ['PostgreSQL', 'MongoDB', 'Redis', 'Snowflake'],
+    tools: ['Git', 'Jenkins', 'Airflow', 'Power BI', 'Tableau'],
+    domain: ['Machine Learning', 'Data Engineering', 'DevOps']
+  };
   
-  let matched = 0;
-  skills.forEach(skill => {
-    // Check if Steve has this skill anywhere
-    Object.values(STEVE_SKILLS).forEach(categorySkills => {
-      if (categorySkills.some(s => 
-        s.toLowerCase() === skill.toLowerCase() ||
-        s.toLowerCase().includes(skill.toLowerCase())
-      )) {
-        matched++;
-      }
-    });
-  });
-  
-  return Math.round((matched / skills.length) * 100);
+  for (const [cat, skills] of Object.entries(categories)) {
+    if (skills.some(s => skill.toLowerCase().includes(s.toLowerCase()))) {
+      return cat;
+    }
+  }
+  return 'general';
 }
 
-function identifyRelevantProjects(requiredSkills: any): string[] {
-  const projects = [];
+function calculateCategoryScore(matches: any[], category: string): number {
+  const categoryMatches = matches.filter(m => m.category === category);
+  if (categoryMatches.length === 0) return 60;
   
-  // Check for BI/Analytics needs
-  if (requiredSkills.tools.some((t: string) => t.toLowerCase().includes('power bi')) ||
-      requiredSkills.domains.some((d: string) => d.toLowerCase().includes('business intelligence'))) {
+  const avg = categoryMatches.reduce((sum, m) => sum + m.score, 0) / categoryMatches.length;
+  return Math.round(avg);
+}
+
+function calculateExperienceScore(jobText: string): number {
+  const yearsMatch = jobText.match(/(\d+)\+?\s*years?\s+(?:of\s+)?experience/i);
+  if (!yearsMatch) return 85;
+  
+  const requiredYears = parseInt(yearsMatch[1]);
+  const steveYears = 14;
+  
+  if (steveYears >= requiredYears) return 95;
+  if (steveYears >= requiredYears - 2) return 75;
+  if (steveYears >= requiredYears - 4) return 55;
+  return 35;
+}
+
+function generateRecommendation(score: number, strong: any[], gaps: any[]): string {
+  if (score >= 75) {
+    return `Strong alignment! This role leverages my expertise in ${strong[0]?.name} and ${strong[1]?.name}. I'd bring immediate value while being excited to deepen my knowledge in ${gaps[0]?.name || 'emerging areas'}.`;
+  } else if (score >= 55) {
+    return `Solid fit with growth potential. My experience in ${strong[0]?.name} provides a strong foundation. I'd need to ramp up on ${gaps[0]?.name} and ${gaps[1]?.name}, which I'm eager to do.`;
+  } else if (score >= 35) {
+    return `Partial alignment. While I have transferable skills in ${strong[0]?.name || 'related areas'}, this role would require significant learning in ${gaps[0]?.name} and ${gaps[1]?.name}. I'm up for the challenge if you value learning agility.`;
+  }
+  return `Limited match. This role requires deep expertise in ${gaps[0]?.name} and ${gaps[1]?.name} that I haven't yet developed. You might find better-aligned candidates, though I'm always eager to expand into new domains.`;
+}
+
+function identifyRelevantProjects(matches: any[]): string[] {
+  const projects = [];
+  const strongSkills = matches.filter(m => m.score >= 70).map(m => m.name.toLowerCase());
+  
+  if (strongSkills.some(s => s.includes('power bi') || s.includes('business intelligence'))) {
     projects.push('Strainprint Analytics Platform');
+  }
+  if (strongSkills.some(s => s.includes('data') || s.includes('etl'))) {
     projects.push('Maymont Homes Data Ecosystem');
   }
-  
-  // Check for ML/AI needs  
-  if (requiredSkills.domains.some((d: string) => 
-    d.toLowerCase().includes('machine learning') || 
-    d.toLowerCase().includes('ai'))) {
+  if (strongSkills.some(s => s.includes('machine learning') || s.includes('ai'))) {
     projects.push('LinkedIn Job Tracker AI');
-    projects.push('Real Estate Price Predictor');
-  }
-  
-  // Check for cloud/data engineering
-  if (requiredSkills.cloud.length > 0 || 
-      requiredSkills.tools.some((t: string) => t.toLowerCase().includes('etl'))) {
-    projects.push('Microsoft Fabric Practice Implementation');
-    projects.push('Data System Overhaul - 30+ sources');
   }
   
   return projects.slice(0, 3);
