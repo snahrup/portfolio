@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     if (hasJobDescription) {
       messages.push({
         role: 'system',
-        content: 'The user appears to have shared a job description. Use the analyzeJobFit tool to provide a detailed compatibility analysis with visualizations.'
+        content: 'The user appears to have shared a job description. Use the analyzeJobFit tool to provide a detailed compatibility analysis. Remember you are Steve assessing YOUR fit for THEIR role. Use first person (I/my/mine) when discussing your skills and experience.'
       });
     }
 
