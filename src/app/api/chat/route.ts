@@ -9,6 +9,7 @@ import { getProjects } from './tools/getProjects';
 import { getResume } from './tools/getResume';
 import { getSkills } from './tools/getSkills';
 import { getSports } from './tools/getSport';
+import { analyzeJobFit, isJobDescription } from './tools/analyzeJobFit';
 
 export const maxDuration = 30;
 
@@ -32,6 +33,18 @@ export async function POST(req: Request) {
     console.log('[CHAT-API] Incoming messages:', messages);
 
     messages.unshift(SYSTEM_PROMPT);
+    
+    // Check if the latest message contains a job description
+    const lastMessage = messages[messages.length - 1];
+    const hasJobDescription = lastMessage?.content && isJobDescription(lastMessage.content);
+    
+    // If job description detected, add a system message to guide the AI
+    if (hasJobDescription) {
+      messages.push({
+        role: 'system',
+        content: 'The user appears to have shared a job description. Use the analyzeJobFit tool to provide a detailed compatibility analysis with visualizations.'
+      });
+    }
 
     const tools = {
       getProjects,
@@ -42,6 +55,7 @@ export async function POST(req: Request) {
       getSports,
       getCrazy,
       getIntership,
+      analyzeJobFit,
     };
 
     const result = streamText({

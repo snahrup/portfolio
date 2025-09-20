@@ -7,6 +7,7 @@ import AllProjects from '../projects/AllProjects';
 import Resume from '../resume';
 import Skills from '../skills';
 import Sports from '../sport';
+import { JobAnalysis } from './JobAnalysis';
 
 interface ToolRendererProps {
   toolInvocations: any[];
@@ -83,6 +84,13 @@ export default function ToolRenderer({
             return (
               <div key={toolCallId} className="w-full rounded-lg">
                 <InternshipCard />
+              </div>
+            );
+
+          case 'analyzeJobFit':
+            return (
+              <div key={toolCallId} className="w-full rounded-lg">
+                <JobAnalysis data={tool.result} />
               </div>
             );
 

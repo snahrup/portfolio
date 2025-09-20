@@ -52,6 +52,7 @@ const questionConfig = [
 
 // Helper drawer data
 const specialQuestions = [
+  '🎯 Recruiter? Paste your job URL or description for instant fit analysis',
   'What are your thoughts on AI in BI?',
   'Who are you?',
   'Can I see your resume?',
@@ -63,6 +64,17 @@ const specialQuestions = [
 ];
 
 const questionsByCategory = [
+  {
+    id: 'recruiter',
+    name: 'For Recruiters',
+    icon: UserSearch,
+    questions: [
+      '🎯 Analyze job fit - paste job URL or description',
+      'How well do I match your open position?',
+      'What makes me different from other candidates?',
+      'Can you download my resume?',
+    ],
+  },
   {
     id: 'me',
     name: 'Me',
