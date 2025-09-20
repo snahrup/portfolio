@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { MatchDonut } from './charts/MatchDonut';
 import { SkillsBars } from './charts/SkillsBars';
 import { SimpleRadar } from './charts/SimpleRadar';
-import { AlertCircle, CheckCircle, TrendingUp, Briefcase } from 'lucide-react';
+import { AlertCircle, CheckCircle, TrendingUp, Briefcase, Target, ChevronRight } from 'lucide-react';
 
 interface JobAnalysisProps {
   data: {
@@ -14,7 +14,7 @@ interface JobAnalysisProps {
     skills_match?: Array<{
       name: string;
       required: number;
-      yours: number;
+      mine: number;
     }>;
     radar_data?: Array<{
       category: string;
@@ -64,58 +64,73 @@ export function JobAnalysis({ data }: JobAnalysisProps) {
     return null;
   }
 
+  // Get match status for header
+  const getMatchStatus = () => {
+    if (data.overall_match! >= 80) return { text: 'Excellent Match', color: 'text-green-600' };
+    if (data.overall_match! >= 60) return { text: 'Good Match', color: 'text-blue-600' };
+    if (data.overall_match! >= 40) return { text: 'Partial Match', color: 'text-amber-600' };
+    return { text: 'Limited Match', color: 'text-red-600' };
+  };
+
+  const matchStatus = getMatchStatus();
+
   return (
     <div className="space-y-6">
-      {/* Overall Match Score */}
+      {/* Header with Overall Score */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-card rounded-lg p-6 border"
+        className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-900/50 dark:to-blue-900/20 rounded-lg p-6 border"
       >
-        <h3 className="text-lg font-semibold mb-4">Overall Compatibility</h3>
-        <MatchDonut percentage={data.overall_match} />
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold flex items-center gap-2">
+            <Target className="h-6 w-6 text-blue-500" />
+            Job Fit Analysis
+          </h2>
+          <span className={`font-semibold ${matchStatus.color}`}>
+            {matchStatus.text}
+          </span>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="flex justify-center">
+            <MatchDonut percentage={data.overall_match} size={160} />
+          </div>
+          <div className="md:col-span-2 space-y-3">
+            <h3 className="font-semibold text-sm text-muted-foreground">MY TOP MATCHING SKILLS</h3>
+            <SkillsBars skills={data.skills_match.slice(0, 3)} />
+          </div>
+        </div>
       </motion.div>
 
-      {/* Skills Match */}
+      {/* Competency Radar */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
         className="bg-card rounded-lg p-6 border"
       >
-        <h3 className="text-lg font-semibold mb-4">Top Skills Alignment</h3>
-        <SkillsBars skills={data.skills_match} />
-      </motion.div>
-
-      {/* Radar Chart */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="bg-card rounded-lg p-6 border"
-      >
-        <h3 className="text-lg font-semibold mb-4">Competency Breakdown</h3>
+        <h3 className="text-lg font-semibold mb-4">Competency Analysis</h3>
         <SimpleRadar data={data.radar_data} />
       </motion.div>
 
-      {/* Strengths & Gaps */}
+      {/* Strengths & Growth Side by Side */}
       <div className="grid md:grid-cols-2 gap-4">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-card rounded-lg p-6 border"
+          transition={{ delay: 0.3 }}
+          className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 rounded-lg p-6 border"
         >
           <h3 className="flex items-center gap-2 text-lg font-semibold mb-4">
-            <CheckCircle className="h-5 w-5 text-green-500" />
-            Key Strengths
+            <CheckCircle className="h-5 w-5 text-green-600" />
+            My Strengths for This Role
           </h3>
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {data.highlights.map((highlight, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="text-green-500 mt-1">•</span>
-                <div>
-                  <span className="font-medium">{highlight.name}</span>
+              <li key={i} className="flex items-start gap-3">
+                <ChevronRight className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
+                <div className="space-y-0.5">
+                  <span className="font-medium text-foreground">{highlight.name}</span>
                   {highlight.note && (
                     <span className="text-sm text-muted-foreground block">
                       {highlight.note}
@@ -130,21 +145,21 @@ export function JobAnalysis({ data }: JobAnalysisProps) {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.7 }}
-          className="bg-card rounded-lg p-6 border"
+          transition={{ delay: 0.4 }}
+          className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 rounded-lg p-6 border"
         >
           <h3 className="flex items-center gap-2 text-lg font-semibold mb-4">
-            <TrendingUp className="h-5 w-5 text-amber-500" />
-            Growth Opportunities
+            <TrendingUp className="h-5 w-5 text-amber-600" />
+            Areas I'd Develop
           </h3>
-          <ul className="space-y-2">
+          <ul className="space-y-3">
             {data.gaps.map((gap, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="text-amber-500 mt-1">•</span>
-                <div>
-                  <span className="font-medium">{gap.name}</span>
-                  <span className="text-sm text-muted-foreground block">
-                    {gap.category}
+              <li key={i} className="flex items-start gap-3">
+                <ChevronRight className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                <div className="space-y-0.5">
+                  <span className="font-medium text-foreground">{gap.name}</span>
+                  <span className="text-sm text-muted-foreground block capitalize">
+                    {gap.category} Skill
                   </span>
                 </div>
               </li>
@@ -154,43 +169,40 @@ export function JobAnalysis({ data }: JobAnalysisProps) {
       </div>
 
       {/* Relevant Projects */}
-      {data.relevant_projects.length > 0 && (
+      {data.relevant_projects && data.relevant_projects.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 0.5 }}
           className="bg-card rounded-lg p-6 border"
         >
           <h3 className="flex items-center gap-2 text-lg font-semibold mb-4">
             <Briefcase className="h-5 w-5 text-blue-500" />
-            Relevant Portfolio Projects
+            My Relevant Portfolio Projects
           </h3>
-          <div className="space-y-2">
+          <div className="grid md:grid-cols-3 gap-3">
             {data.relevant_projects.map((project, i) => (
               <div
                 key={i}
-                className="flex items-center gap-2 p-3 bg-muted/50 rounded-md"
+                className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800"
               >
-                <span className="text-blue-500">→</span>
-                <span>{project}</span>
+                <div className="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0" />
+                <span className="font-medium text-sm">{project}</span>
               </div>
             ))}
           </div>
         </motion.div>
       )}
 
-      {/* Recommendation */}
+      {/* Final Assessment */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9 }}
-        className="bg-gradient-to-r from-blue-50 to-green-50 dark:from-blue-950/20 dark:to-green-950/20 rounded-lg p-6 border"
+        transition={{ delay: 0.6 }}
+        className="bg-gradient-to-r from-slate-50 to-blue-50 dark:from-slate-900/50 dark:to-blue-900/20 rounded-lg p-6 border"
       >
-        <h3 className="flex items-center gap-2 text-lg font-semibold mb-3">
-          <AlertCircle className="h-5 w-5 text-blue-500" />
-          My Honest Assessment
-        </h3>
-        <p className="text-foreground/90 leading-relaxed">
+        <h3 className="text-lg font-semibold mb-3">My Assessment</h3>
+        <p className="text-foreground leading-relaxed">
           {data.recommendation}
         </p>
       </motion.div>

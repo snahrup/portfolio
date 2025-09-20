@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 interface SkillMatch {
   name: string;
   required: number;
-  yours: number;
+  mine: number;  // Changed from 'yours' to 'mine'
 }
 
 interface SkillsBarsProps {
@@ -22,7 +22,7 @@ export function SkillsBars({ skills }: SkillsBarsProps) {
   return (
     <div className="w-full space-y-3">
       {skills.map((skill, index) => {
-        const percentage = Math.min((skill.yours / skill.required) * 100, 100);
+        const percentage = Math.min((skill.mine / skill.required) * 100, 100);  // Changed from skill.yours to skill.mine
         const color = getBarColor(percentage);
 
         return (

@@ -148,7 +148,7 @@ export const analyzeJobFit = tool({
     const top5Skills = topMatches.slice(0, 5).map(skill => ({
       name: skill.name,
       required: 100,
-      yours: skill.strength
+      mine: skill.strength  // Changed from 'yours' to 'mine'
     }));
     
     // Calculate category scores for radar
@@ -188,18 +188,20 @@ export const analyzeJobFit = tool({
     // Generate recommendation
     let recommendation = '';
     if (overallScore >= 80) {
-      recommendation = "Excellent fit! Your experience aligns strongly with the requirements. I'd love to discuss how my expertise in " +
+      recommendation = "Excellent fit! This role aligns strongly with my experience. I'd love to discuss how my expertise in " +
         topMatches[0]?.name + " and " + topMatches[1]?.name + " can contribute to your team.";
     } else if (overallScore >= 60) {
-      recommendation = "Good alignment with room to grow. My strong background in " +
-        topMatches[0]?.name + " positions me well, and I'm eager to expand into " +
+      recommendation = "Good alignment with growth potential. My strong background in " +
+        topMatches[0]?.name + " positions me well for this role, and I'm eager to expand my skills in " +
         gaps[0]?.name + ".";
     } else if (overallScore >= 40) {
-      recommendation = "While there are gaps, my transferable skills in " +
-        STEVE_SKILLS.domains[0] + " and proven ability to learn quickly make this an interesting challenge.";
+      recommendation = "Partial match with transferable skills. While I'd need to develop expertise in " +
+        gaps[0]?.name + ", my experience in " + STEVE_SKILLS.domains[0] + 
+        " and proven ability to learn quickly could make this work.";
     } else {
-      recommendation = "This role requires expertise outside my current focus areas. You might want someone with deeper experience in " +
-        gaps[0]?.name + " and " + gaps[1]?.name + ".";
+      recommendation = "Limited alignment. This role requires significant expertise in " +
+        gaps[0]?.name + " and " + gaps[1]?.name + 
+        " that I haven't developed yet. You may want to consider candidates with more direct experience in these areas.";
     }
     
     // Identify relevant projects
