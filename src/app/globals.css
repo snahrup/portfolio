@@ -148,6 +148,22 @@
   background-color: rgba(155, 155, 155, 0.7);
 }
 
+/* Subtle pulse animation for Job Fit button */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.02);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 /* Ensure code blocks can scroll horizontally */
 pre {
   white-space: pre;

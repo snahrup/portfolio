@@ -11,6 +11,7 @@ import {
   Laugh,
   Layers,
   UserRoundSearch,
+  Target,
 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -21,7 +22,8 @@ const questions = {
   Me: 'Who are you? I want to know more about you.',
   Projects: 'What are your projects? What are you working on right now?',
   Skills: 'What are your skills? Give me a list of your soft and hard skills.',
-  Contact: 'How can I contact you?'
+  Contact: 'How can I contact you?',
+  JobFit: '🎯 Analyze my fit for your job - paste the job description or URL here!'
 } as const;
 
 const questionConfig = [
@@ -29,6 +31,7 @@ const questionConfig = [
   { key: 'Projects', color: '#3E9858', icon: BriefcaseBusiness },
   { key: 'Skills', color: '#856ED9', icon: Layers },
   { key: 'Contact', color: '#C19433', icon: UserRoundSearch },
+  { key: 'JobFit', color: '#EF4444', icon: Target },
 ] as const;
 
 /* ---------- component ---------- */
@@ -180,18 +183,39 @@ export default function Home() {
           </div>
         </form>
 
-        {/* quick-question grid - now with 4 buttons instead of 5 */}
-        <div className="mt-4 grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
+        {/* quick-question grid - now with 5 buttons including Job Fit */}
+        <div className="mt-4 grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-5">
           {questionConfig.map(({ key, color, icon: Icon }) => (
             <Button
               key={key}
               onClick={() => goToChat(questions[key])}
               variant="outline"
-              className="border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border bg-white/30 py-8 shadow-none backdrop-blur-lg active:scale-95 md:p-10"
+              className={`
+                border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border py-8 shadow-none backdrop-blur-lg active:scale-95 md:p-10 relative overflow-visible
+                ${key === 'JobFit' 
+                  ? 'bg-gradient-to-br from-red-50 to-orange-50 hover:from-red-100 hover:to-orange-100 dark:from-red-950/30 dark:to-orange-950/30 dark:hover:from-red-900/30 dark:hover:to-orange-900/30 ring-2 ring-red-200 dark:ring-red-800 animate-pulse-subtle' 
+                  : 'bg-white/30'
+                }
+              `}
             >
+              {key === 'JobFit' && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1, type: "spring", stiffness: 260, damping: 20 }}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg"
+                >
+                  NEW
+                </motion.div>
+              )}
               <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
                 <Icon size={22} strokeWidth={2} color={color} />
-                <span className="text-xs font-medium sm:text-sm">{key}</span>
+                <span className={`text-xs font-medium sm:text-sm ${key === 'JobFit' ? 'font-bold' : ''}`}>
+                  {key === 'JobFit' ? 'Job Fit' : key}
+                </span>
+                {key === 'JobFit' && (
+                  <span className="text-[9px] text-gray-500 dark:text-gray-400 mt-0.5">AI Analysis</span>
+                )}
               </div>
             </Button>
           ))}
