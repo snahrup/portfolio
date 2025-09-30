@@ -43,7 +43,7 @@ export default function Home() {
   const goToChat = (query: string) =>
     router.push(`/chat?query=${encodeURIComponent(query)}`);
 
-  /* hero animations (unchanged) */
+  /* hero animations */
   const topElementVariants = {
     hidden: { opacity: 0, y: -60 },
     visible: {
@@ -61,27 +61,23 @@ export default function Home() {
     },
   };
 
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+  };
+
   useEffect(() => {
-    // Précharger les assets du chat en arrière-plan
+    // Preload chat assets
     const img = new window.Image();
-    img.src = '/landing-memojis.png';
-
-    // Précharger les vidéos aussi
-    const linkWebm = document.createElement('link');
-    linkWebm.rel = 'preload'; // Note: prefetch au lieu de preload
-    linkWebm.as = 'video';
-    linkWebm.href = '/final_memojis.webm';
-    document.head.appendChild(linkWebm);
-
-    const linkMp4 = document.createElement('link');
-    linkMp4.rel = 'prefetch';
-    linkMp4.as = 'video';
-    linkMp4.href = '/Memoji_Animation_Smile_to_Speak_Loop.mp4';
-    document.head.appendChild(linkMp4);
+    img.src = '/steve-profile.jpg';
   }, []);
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 pb-10 md:pb-20">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-4 py-16 md:py-20">
       {/* big blurred footer word */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center overflow-hidden">
         <div
@@ -95,7 +91,6 @@ export default function Home() {
       {/* GitHub button */}
       <div className="absolute top-6 right-8 z-20">
         <GithubButton
-          //targetStars={68}
           animationDuration={1.5}
           label="Star"
           size={'sm'}
@@ -117,115 +112,146 @@ export default function Home() {
         </button>
       </div>
 
-      {/* header */}
-      <motion.div
-        className="z-1 mt-24 mb-8 flex flex-col items-center text-center md:mt-4 md:mb-12 max-w-5xl px-4"
-        variants={topElementVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="z-100">
-          <WelcomeModal />
-        </div>
-
-        <h2 className="text-secondary-foreground mt-1 text-xl font-semibold md:text-2xl">
-          Hey, I'm Steve 👋
-        </h2>
-        <h1 
-          className="font-bold leading-tight mt-2"
-          style={{
-            fontSize: 'clamp(2rem, 5vw + 0.5rem, 4.5rem)',
-          }}
+      {/* Main Content Container */}
+      <div className="z-10 w-full max-w-4xl mx-auto">
+        {/* Profile Section */}
+        <motion.div
+          className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12"
+          variants={topElementVariants}
+          initial="hidden"
+          animate="visible"
         >
-          Business Intelligence Architect & Strategist
-        </h1>
-      </motion.div>
+          {/* Profile Image */}
+          <motion.div
+            className="flex-shrink-0"
+            variants={imageVariants}
+          >
+            <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden shadow-xl ring-4 ring-white/10">
+              <Image
+                src="/steve-profile.jpg"
+                alt="Steve Nahrup"
+                width={224}
+                height={224}
+                priority
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </motion.div>
 
-      {/* centre memoji */}
-      <div className="relative z-10 h-52 w-52 overflow-hidden sm:h-72 sm:w-72">
-        <Image
-          src="/landing-memojis.png"
-          alt="Hero memoji"
-          width={500}
-          height={500}
-          priority
-          className="h-full w-full object-contain"
-        />
+          {/* Text Content */}
+          <div className="flex-1 text-center md:text-left">
+            <div className="mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold mb-2">
+                Steve Nahrup
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground mb-1">
+                Business Intelligence Architect & Data Analytics Leader
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Charleston, SC
+              </p>
+            </div>
+
+            <div className="mb-6">
+              <p className="text-muted-foreground leading-relaxed max-w-2xl">
+                Hey 👋
+                <br />
+                I'm Steve Nahrup, a seasoned BI architect with 14+ years building enterprise analytics platforms. 
+                I specialize in transforming fragmented data into governed insights through enterprise BI architecture, 
+                marketing analytics, and data engineering. I've led teams of 8-15 building Power BI semantic models, 
+                multi-touch attribution systems, and cloud data platforms at scale.
+              </p>
+            </div>
+
+            {/* Skill Tags */}
+            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+              {['Power BI', 'Microsoft Fabric', 'Marketing Analytics', 'Attribution Modeling', 'Data Engineering'].map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1.5 text-xs font-medium bg-accent text-accent-foreground rounded-full border border-border"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Input + Quick Buttons */}
+        <motion.div
+          variants={bottomElementVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex w-full flex-col items-center justify-center"
+        >
+          {/* Search Input */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (input.trim()) goToChat(input.trim());
+            }}
+            className="relative w-full max-w-2xl mb-6"
+          >
+            <div className="mx-auto flex items-center rounded-full border border-neutral-200 bg-white/30 py-2.5 pr-2 pl-6 backdrop-blur-lg transition-all hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600 shadow-lg">
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask me anything…"
+                className="w-full border-none bg-transparent text-base text-neutral-800 placeholder:text-neutral-500 focus:outline-none dark:text-neutral-200 dark:placeholder:text-neutral-500"
+              />
+              <button
+                type="submit"
+                disabled={!input.trim()}
+                aria-label="Submit question"
+                className="flex items-center justify-center rounded-full bg-[#0171E3] p-2.5 text-white transition-colors hover:bg-blue-600 disabled:opacity-70 dark:bg-blue-600 dark:hover:bg-blue-700"
+              >
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </div>
+          </form>
+
+          {/* Quick Question Buttons */}
+          <div className="grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-5">
+            {questionConfig.map(({ key, color, icon: Icon }) => (
+              <Button
+                key={key}
+                onClick={() => goToChat(questions[key])}
+                variant="outline"
+                className={`
+                  border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border py-8 shadow-none backdrop-blur-lg active:scale-95 md:p-10 relative overflow-visible
+                  ${key === 'JobFit' 
+                    ? 'bg-gradient-to-br from-red-50 to-orange-50 hover:from-red-100 hover:to-orange-100 dark:from-red-950/30 dark:to-orange-950/30 dark:hover:from-red-900/30 dark:hover:to-orange-900/30 ring-2 ring-red-200 dark:ring-red-800 animate-pulse-subtle' 
+                    : 'bg-white/30'
+                  }
+                `}
+              >
+                {key === 'JobFit' && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 1, type: "spring", stiffness: 260, damping: 20 }}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg"
+                  >
+                    NEW
+                  </motion.div>
+                )}
+                <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
+                  <Icon size={22} strokeWidth={2} color={color} />
+                  <span className={`text-xs font-medium sm:text-sm ${key === 'JobFit' ? 'font-bold' : ''}`}>
+                    {key === 'JobFit' ? 'Job Fit' : key}
+                  </span>
+                  {key === 'JobFit' && (
+                    <span className="text-[9px] text-gray-500 dark:text-gray-400 mt-0.5">AI Analysis</span>
+                  )}
+                </div>
+              </Button>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
-      {/* input + quick buttons */}
-      <motion.div
-        variants={bottomElementVariants}
-        initial="hidden"
-        animate="visible"
-        className="z-10 mt-4 flex w-full flex-col items-center justify-center md:px-0"
-      >
-        {/* free-form question */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (input.trim()) goToChat(input.trim());
-          }}
-          className="relative w-full max-w-lg"
-        >
-          <div className="mx-auto flex items-center rounded-full border border-neutral-200 bg-white/30 py-2.5 pr-2 pl-6 backdrop-blur-lg transition-all hover:border-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 dark:hover:border-neutral-600">
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask me anything…"
-              className="w-full border-none bg-transparent text-base text-neutral-800 placeholder:text-neutral-500 focus:outline-none dark:text-neutral-200 dark:placeholder:text-neutral-500"
-            />
-            <button
-              type="submit"
-              disabled={!input.trim()}
-              aria-label="Submit question"
-              className="flex items-center justify-center rounded-full bg-[#0171E3] p-2.5 text-white transition-colors hover:bg-blue-600 disabled:opacity-70 dark:bg-blue-600 dark:hover:bg-blue-700"
-            >
-              <ArrowRight className="h-5 w-5" />
-            </button>
-          </div>
-        </form>
-
-        {/* quick-question grid - now with 5 buttons including Job Fit */}
-        <div className="mt-4 grid w-full max-w-2xl grid-cols-2 gap-3 sm:grid-cols-5">
-          {questionConfig.map(({ key, color, icon: Icon }) => (
-            <Button
-              key={key}
-              onClick={() => goToChat(questions[key])}
-              variant="outline"
-              className={`
-                border-border hover:bg-border/30 aspect-square w-full cursor-pointer rounded-2xl border py-8 shadow-none backdrop-blur-lg active:scale-95 md:p-10 relative overflow-visible
-                ${key === 'JobFit' 
-                  ? 'bg-gradient-to-br from-red-50 to-orange-50 hover:from-red-100 hover:to-orange-100 dark:from-red-950/30 dark:to-orange-950/30 dark:hover:from-red-900/30 dark:hover:to-orange-900/30 ring-2 ring-red-200 dark:ring-red-800 animate-pulse-subtle' 
-                  : 'bg-white/30'
-                }
-              `}
-            >
-              {key === 'JobFit' && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 1, type: "spring", stiffness: 260, damping: 20 }}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg"
-                >
-                  NEW
-                </motion.div>
-              )}
-              <div className="flex h-full flex-col items-center justify-center gap-1 text-gray-700">
-                <Icon size={22} strokeWidth={2} color={color} />
-                <span className={`text-xs font-medium sm:text-sm ${key === 'JobFit' ? 'font-bold' : ''}`}>
-                  {key === 'JobFit' ? 'Job Fit' : key}
-                </span>
-                {key === 'JobFit' && (
-                  <span className="text-[9px] text-gray-500 dark:text-gray-400 mt-0.5">AI Analysis</span>
-                )}
-              </div>
-            </Button>
-          ))}
-        </div>
-      </motion.div>
       <FluidCursor />
     </div>
   );
