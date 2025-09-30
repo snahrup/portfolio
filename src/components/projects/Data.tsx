@@ -2,27 +2,189 @@ import Image from 'next/image';
 import { ChevronRight, Link } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
-// Steve Nahrup's projects
+// Steve Nahrup's projects - Focused on BI Architecture & Data Analytics
 const PROJECT_CONTENT = [
   {
-    title: 'LinkedIn Job Tracker - AI-Powered Job Search Assistant',
+    title: 'Enterprise BI Architecture - Fortune 500 Consulting Firm',
     description:
-      'Built an intelligent job application tracker that automatically syncs with Gmail and uses AI to score job matches. It\'s like having a personal job search assistant that never forgets. The system uses GPT-4 to extract job details from emails, compares requirements to your actual resume, and scores each opportunity 0-100%. Tracks which companies viewed your application, average response times, and provides actionable insights. What used to take hours in spreadsheets now happens automatically with AI-powered insights.',
+      'Led the complete rebuild of enterprise analytics infrastructure for Senturus, a major Microsoft consulting firm. Architected a unified data platform on Microsoft Fabric that consolidated 30+ disparate data sources into a single source of truth. Designed semantic models, established data governance frameworks (RLS, CI/CD), and created reusable assets that became the foundation for Finance, Sales, Marketing, and Operations reporting. This wasn\'t just building dashboards - it was building the data backbone that powers business decisions across the entire organization.',
+    techStack: [
+      'Microsoft Fabric',
+      'Power BI',
+      'Semantic Modeling',
+      'Data Governance',
+      'Azure',
+      'CI/CD',
+      'Enterprise Architecture',
+    ],
+    date: '2023-2024',
+    metrics: [
+      'Consolidated 30+ data sources into unified platform',
+      'Single source of truth for entire enterprise',
+      'Enterprise-grade security & governance (RLS, data contracts)',
+      'Deployment errors reduced 70% with CI/CD',
+      'Reusable semantic models accelerated delivery',
+    ],
+  },
+  {
+    title: 'Marketing Analytics Platform - Home Services Company',
+    description:
+      'Built a comprehensive marketing analytics foundation for Maymont Homes from the ground up. Created a cloud-native BI ecosystem that unified marketing data from ad platforms, CRM, web analytics, and product telemetry into actionable insights. Designed scalable ETL pipelines (Fabric + Spark/dbt) with automated testing and schema validation. Built attribution models and cohort analysis that exposed conversion bottlenecks - insights that optimized channel mix and improved marketing ROI. Delivered pricing optimization and demand forecasting models that became the weekly operating system for executives.',
+    techStack: [
+      'Microsoft Fabric',
+      'Spark/dbt',
+      'Power BI',
+      'Attribution Modeling',
+      'Marketing Analytics',
+      'Data Engineering',
+      'ETL Pipelines',
+    ],
+    date: '2024',
+    metrics: [
+      'Built company data dictionary & KPI catalog (CAC, CVR, demand)',
+      'Automated data quality testing - MTR for data issues < 8 hours',
+      'Attribution insights optimized channel mix and improved ROI',
+      'Pricing models became weekly executive dashboard',
+      'Schema-change alerts prevented downstream report breaks',
+    ],
+  },
+  {
+    title: 'Unified Data Platform - Cannabis Analytics (Strainprint)',
+    description:
+      'Architected cloud-native analytics platform unifying Strainprint\'s marketing, finance, inventory, and compliance operations. Consolidated fragmented ad platforms, CRM, web analytics, and product telemetry into a single AWS + Power BI infrastructure. Built self-serve analytics foundation with documented attribution logic and KPIs - achieved 90% self-serve adoption across 50 users. Implemented data quality monitoring and A/B testing framework with statistical rigor, enabling data-driven decisions across Marketing and Product. Set analytics roadmap aligned to business priorities: acquisition lift, churn reduction.',
+    techStack: [
+      'AWS',
+      'Power BI',
+      'Marketing Analytics',
+      'Attribution Modeling',
+      'A/B Testing',
+      'Self-Service BI',
+      'Data Quality',
+    ],
+    date: '2025',
+    metrics: [
+      'Unified marketing data foundation across all channels',
+      'Documented attribution logic & KPIs with 90% self-serve adoption',
+      'Reduced broken reports by 70% with quality monitoring',
+      'A/B testing framework with statistical rigor',
+      'Analytics agenda tied to acquisition lift & churn reduction',
+    ],
+  },
+  {
+    title: 'Multi-Touch Attribution & Experimentation - Digital Marketing',
+    description:
+      'Built sophisticated attribution models for HelloWorld (Merkle) serving Fortune 500 clients in digital marketing. Architected multi-touch attribution systems that quantified channel contributions across email, social, display, and search - informing media mix and budget allocation. Delivered experimentation frameworks (A/B testing, holdout analysis) to measure lift and validate marketing investments. Established data governance and privacy-compliant processes (GDPR/CCPA) while maintaining audit-ready campaigns. Translated complex analytics into executive narratives that accelerated renewals and drove strategic expansion.',
+    techStack: [
+      'Attribution Modeling',
+      'A/B Testing',
+      'Campaign Analytics',
+      'Marketing Measurement',
+      'Data Governance',
+      'Executive Reporting',
+    ],
+    date: '2014-2018',
+    metrics: [
+      'Multi-touch attribution quantified channel contributions',
+      'Experimentation frameworks measured lift and validated spend',
+      'GDPR/CCPA compliant processes with audit-ready campaigns',
+      'KPI storytelling accelerated renewals and expansion',
+      'Led 8-15 member analytics teams for Fortune 500 clients',
+    ],
+  },
+  {
+    title: 'Real Estate Analytics Platform - Demand Forecasting & Pricing',
+    description:
+      'Designed predictive analytics system for real estate development company that forecasts home and land prices up to 15 years in advance. Integrated 37 disparate data sources - from school ratings and crime statistics to job growth and economic indicators - into a unified Power BI platform. Built demand forecasting and channel performance models that became the foundation for investment decisions. The system identifies high-growth markets and helps avoid poor investments by analyzing demographic trends, infrastructure development, and competitive dynamics.',
+    techStack: [
+      'Power BI',
+      'Predictive Analytics',
+      'Data Integration',
+      'AWS',
+      'SQL',
+      'Demand Forecasting',
+    ],
+    date: '2024',
+    metrics: [
+      'Integrated 37 data sources into unified platform',
+      'Forecasts property values up to 15 years in advance',
+      'Identified high-ROI investment areas',
+      'Channel performance models informed budget allocation',
+    ],
+  },
+  {
+    title: 'Data Consulting Practice - Snowflake & Analytics Strategy',
+    description:
+      'Drove operations and analytics consulting for Strainprint Technologies while building their data practice globally. Established Snowflake/Databricks + dbt foundations for campaign and revenue analytics across regions. Enabled client teams to build and operate dashboards independently, increasing self-serve adoption. Instrumented funnels, cohorts, and attribution - providing experiment-ready infrastructure for paid and organic channels. Developed conceptual and logical data models, advised on AWS cloud architecture for scale. Stood up analytics vision that became the strategic foundation for multiple client engagements.',
+    techStack: [
+      'Snowflake',
+      'Databricks',
+      'dbt',
+      'Data Strategy',
+      'Consulting',
+      'Cloud Architecture',
+    ],
+    date: '2018-2021',
+    metrics: [
+      'Established modern data stack (Snowflake/Databricks + dbt)',
+      'Campaign and revenue analytics across global regions',
+      'Increased client self-serve adoption with training',
+      'Funnel, cohort, and attribution instrumentation',
+    ],
+  },
+  {
+    title: 'Power BI Training System - Accelerated Developer Onboarding',
+    description:
+      'Created comprehensive Power BI training program for Inspire11 that reduced new developer onboarding from 2 weeks to 3 days. Built library of 20+ industry-specific templates, 20+ custom themes, and video tutorials covering semantic modeling, DAX optimization, and visualization best practices. The training system became the standard onboarding path for over 50 developers, ensuring consistent quality and accelerating time-to-productivity. Templates standardized delivery patterns and reduced project kickoff time from days to hours.',
+    techStack: [
+      'Power BI',
+      'Training & Documentation',
+      'Template Design',
+      'DAX',
+      'Semantic Modeling',
+    ],
+    date: '2021-2023',
+    metrics: [
+      'Onboarding cut from 2 weeks to 3 days',
+      '20+ industry templates & 20+ custom themes',
+      'Trained 50+ developers with consistent quality',
+      'Templates accelerated project kickoff from days to hours',
+    ],
+  },
+  {
+    title: 'Azure/Power BI Integration - SME to Unified Reporting',
+    description:
+      'Unified fragmented ERP data for SME client (Inspire11) by consolidating into Azure/Fabric data warehouse. Designed Power BI reporting layer that enabled centralized analytics and executive dashboards. Reduced exec report cycle time from 2 weeks to 3 days by eliminating manual data collection. Authored 20+ Power BI templates and external tools that standardized delivery. Partnered with Product and Customer Success to translate feature requests into measurable data outcomes with clear success metrics.',
+    techStack: [
+      'Azure',
+      'Power BI',
+      'Microsoft Fabric',
+      'Data Warehouse',
+      'Executive Dashboards',
+    ],
+    date: '2021-2023',
+    metrics: [
+      'Unified fragmented ERP into centralized warehouse',
+      'Executive report cycle: 2 weeks → 3 days',
+      '20+ standardized Power BI templates',
+      'Translated feature requests into measurable outcomes',
+    ],
+  },
+  {
+    title: 'LinkedIn Job Tracker - Personal Productivity Tool',
+    description:
+      'Built an intelligent job application tracker as a personal project that automatically syncs with Gmail and uses AI to score job matches. The system uses GPT-4 to extract job details from emails, compares requirements to your resume, and scores each opportunity 0-100% across skills, experience, location, and salary fit. Tracks which companies viewed your application and provides actionable insights. What used to take hours in spreadsheets now happens automatically - a practical example of using modern AI tools to solve real problems.',
     techStack: [
       'React',
       'TypeScript',
       'OpenAI GPT-4',
       'Gmail API',
       'Tailwind CSS',
-      'Zustand',
-      'Vite',
     ],
     date: '2025',
     metrics: [
-      '100% automated email parsing',
-      'AI match scoring in < 1 second',
-      '4-dimensional scoring (skills, experience, location, salary)',
-      'Real-time status tracking',
+      '100% automated email parsing with AI',
+      '4-dimensional job fit scoring (skills, experience, location, salary)',
+      'Real-time application status tracking',
       'Zero manual data entry required',
     ],
     links: [
@@ -30,162 +192,6 @@ const PROJECT_CONTENT = [
         name: 'GitHub',
         url: 'https://github.com/snahrup/linkedin-job-tracker',
       },
-      {
-        name: 'Live Demo',
-        url: '#',
-      },
-    ],
-  },
-  {
-    title: 'Cannabis Treatment Optimizer - Helping Patients Find What Works',
-    description:
-      'Built an AI system that helps medical cannabis patients find the right treatment faster. Think of it like Netflix recommendations, but for medical treatments. The system learned from 1.4 million real patient experiences to predict which cannabis strains will work best for each person\'s specific symptoms. Before this, patients had to try dozens of products through trial and error - now they get personalized recommendations instantly. The result? Patients found effective treatments 25% more often and avoided products that wouldn\'t help them.',
-    techStack: [
-      'Microsoft Fabric',
-      'Machine Learning',
-      'Data Analytics',
-      'Power BI',
-      'Python',
-      'Cloud Computing',
-      'Real-time Processing',
-    ],
-    date: '2025',
-    metrics: [
-      'Analyzed 1.4 million patient treatment sessions',
-      'Helped 30,000+ patients find better treatments',
-      '25% more patients found relief',
-      'Recommendations delivered in under 1 second',
-      'Saves patients weeks of trial and error',
-    ],
-    links: [
-      {
-        name: 'Technical Details',
-        url: 'https://github.com/snahrup/portfolio/tree/main/projects/strainprint-ml-pipeline',
-      },
-    ],
-  },
-  {
-    title: 'AI Assistant for Cannabis Business Operations',
-    description:
-      'Created an AI assistant that handles repetitive tasks for a cannabis analytics company. It\'s like having a super-smart intern that never sleeps. The AI answers customer questions, manages inventory levels, sends alerts when products run low, and creates reports automatically. What used to take employees hours now happens instantly, letting the team focus on helping customers instead of paperwork.',
-    techStack: [
-      'OpenAI',
-      'Automation',
-      'n8n Workflows',
-      'Cloud Services',
-      'APIs',
-      'Python',
-    ],
-    date: '2024-2025',
-    metrics: [
-      'Cut manual work by 40%',
-      'Tasks that took days now take hours',
-      '90% of employees using the self-service tools',
-      'Prevented product shortages',
-    ],
-  },
-  {
-    title: 'Real Estate Price Predictor for Home Builders',
-    description:
-      'Built a system that predicts future home and land prices for a real estate development company. It\'s like having a crystal ball for property values. The system combines data from 37 different sources - everything from school ratings to crime statistics to job growth - and predicts what properties will be worth 5, 10, even 15 years from now. This helps the company buy land in areas that will grow in value and avoid areas that won\'t.',
-    techStack: [
-      'Power BI',
-      'Cloud Databases',
-      'Data Integration',
-      'Predictive Analytics',
-      'AWS',
-      'SQL',
-    ],
-    date: '2024',
-    metrics: [
-      'Combined data from 37 different sources',
-      'Predicts prices up to 15 years in advance',
-      'Helped identify best investment areas',
-      'Saved millions in poor investments',
-    ],
-  },
-  {
-    title: 'Data System Overhaul at Fortune 500 Consulting Firm',
-    description:
-      'Led the complete rebuild of data systems for Senturus, a major consulting firm. Imagine trying to find information when it\'s scattered across 30 different filing cabinets - that was their problem. I built a single, organized system where everyone could find what they needed instantly. Set up proper security so people only see what they\'re allowed to see, and made sure the data was always accurate and up-to-date.',
-    techStack: [
-      'Microsoft Fabric',
-      'Enterprise Data Systems',
-      'Security',
-      'Cloud Architecture',
-      'Power BI',
-    ],
-    date: '2023-2024',
-    metrics: [
-      'Combined 30 scattered systems into one',
-      'Single source of truth for entire company',
-      'Enterprise-grade security implemented',
-      'Used by Finance, Sales, and Operations teams',
-    ],
-  },
-  {
-    title: 'AI Tool That Connects Claude to Business Data',
-    description:
-      'Created a tool that lets Claude (the AI assistant) directly access and analyze business data in Microsoft systems. It\'s like giving Claude the keys to your company\'s data warehouse. Instead of manually pulling reports and copying data, you can just ask Claude questions in plain English and get instant answers with live data. This turned hours of report-building into simple conversations.',
-    techStack: [
-      'TypeScript',
-      'Microsoft Fabric',
-      'APIs',
-      'Claude AI',
-      'Power BI',
-    ],
-    date: '2024',
-    links: [
-      {
-        name: 'GitHub',
-        url: 'https://github.com/snahrup/microsoft-fabric-mcp',
-      },
-    ],
-    metrics: [
-      'Reduced report creation time by 60%',
-      'Talk to your data in plain English',
-      'No more manual data exports',
-    ],
-  },
-  {
-    title: 'Memory System for AI Conversations',
-    description:
-      'Built a system that gives Claude AI a "memory" between conversations. Normally, AI assistants forget everything when you start a new chat. This tool saves important context and project details, so you can pick up where you left off days later. It\'s like having a notebook that Claude automatically maintains for every project you work on together.',
-    techStack: [
-      'TypeScript',
-      'Notion',
-      'Database Systems',
-      'Claude AI',
-    ],
-    date: '2024',
-    links: [
-      {
-        name: 'GitHub',
-        url: 'https://github.com/snahrup/claude-context-system',
-      },
-    ],
-    metrics: [
-      'Never lose conversation context again',
-      'Seamlessly continue projects across sessions',
-      'Automatic project organization',
-    ],
-  },
-  {
-    title: 'Training System That Cut Onboarding from 2 Weeks to 3 Days',
-    description:
-      'Created a comprehensive training system for Power BI developers at Inspire11. New hires used to need 2 weeks of training before they could start real work. I built a library of templates, pre-made designs, video tutorials, and practice exercises that got them productive in just 3 days. It\'s like the difference between reading a car manual cover-to-cover versus having someone show you exactly what you need to know to start driving.',
-    techStack: [
-      'Power BI',
-      'Training Materials',
-      'Documentation',
-      'Template Design',
-    ],
-    date: '2021-2023',
-    metrics: [
-      'Training time cut from 2 weeks to 3 days',
-      'Created 20+ industry-specific templates',
-      'Built 20+ custom themes',
-      'Trained over 50 developers',
     ],
   },
 ];
