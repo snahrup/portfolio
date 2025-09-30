@@ -8,10 +8,10 @@ export function Presentation() {
   // Personal information
   const profile = {
     name: 'Steve Nahrup',
-    title: 'Business Intelligence & AI Leader',
+    title: 'Business Intelligence Architect & Data Analytics Leader',
     location: 'Charleston, SC',
     description:
-      "Hey 👋\nI'm Steve Nahrup, a seasoned BI & AI leader with 14+ years of enterprise success. I specialize in turning fragmented data into governed, predictive insights using Microsoft Fabric, Power BI, and AI-driven automation. Currently consulting as AI Automation Architect at Strainprint Technologies while running Blueprint Data Consulting.",
+      "Hey 👋\nI'm Steve Nahrup, a seasoned BI architect with 14+ years building enterprise analytics platforms. I specialize in transforming fragmented data into governed insights through enterprise BI architecture, marketing analytics, and data engineering. I've led teams of 8-15 building Power BI semantic models, multi-touch attribution systems, and cloud data platforms at scale. Currently working on strategic analytics initiatives while running Blueprint Data Consulting.",
     src: '/steve-profile.jpg',
     fallbackSrc:
       'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=3560&auto=format&fit=crop&ixlib=rb-4.0.3',
@@ -101,7 +101,7 @@ export function Presentation() {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="mt-6 flex flex-wrap gap-2"
           >
-            {['Power BI', 'Microsoft Fabric', 'AI Automation', 'Data Engineering', 'Cloud Architecture'].map((tag) => (
+            {['Power BI', 'Microsoft Fabric', 'Marketing Analytics', 'Attribution Modeling', 'Data Engineering'].map((tag) => (
               <span
                 key={tag}
                 className="px-3 py-1 text-xs font-medium bg-accent text-accent-foreground rounded-full"
