@@ -1,93 +1,103 @@
-# 🌿 Cannabis Treatment Optimizer - Helping Patients Find What Works
+# 🏗️ Unified Data Platform for Cannabis Analytics Company
 
 ## What We Built
-An AI system that helps medical cannabis patients find the right treatment faster - like Netflix recommendations but for medical treatments.
+A cloud-native analytics infrastructure that unified marketing, finance, inventory, and compliance data into a single source of truth for Strainprint Technologies.
 
 ## The Problem We Solved
 
-### Before This System:
-- Patients tried dozens of products through trial and error
-- Each failed attempt meant weeks of suffering
-- Doctors had no data to guide recommendations
-- Patients gave up before finding what worked
+### Before This Platform:
+- Marketing data scattered across 15+ ad platforms and tools
+- No single source of truth for CAC, conversion rates, or attribution
+- Finance and Operations teams working from spreadsheets
+- Compliance reporting required manual data gathering
+- Broken reports and data quality issues went undetected for days
+- Teams couldn't answer basic business questions without IT help
 
-### After This System:
-- Patients get personalized recommendations instantly
-- System learns from 1.4 million real patient experiences
-- Predicts which treatments will work for YOUR specific symptoms
-- Finds effective treatments 25% more often
+### After This Platform:
+- All business data unified in AWS + Power BI backbone
+- Self-serve analytics with documented metrics and KPIs
+- 90% adoption across 50 users - teams answer their own questions
+- Data quality monitoring catches issues in hours, not days
+- Marketing attribution logic documented and validated
+- A/B testing framework with statistical rigor
 
-## How It Works (In Plain English)
+## How It Works
 
-### 1. **We Collect Anonymous Treatment Data**
-   - What products patients tried
-   - What symptoms they had
-   - Whether it helped or not
-   - All completely anonymous and secure
+### 1. **Unified Data Foundation**
+Built cloud infrastructure that consolidates:
+   - Marketing: All ad platforms, CRM, web analytics, email campaigns
+   - Finance: Revenue, costs, forecasts, budget tracking
+   - Operations: Inventory levels, product telemetry, fulfillment
+   - Compliance: Audit-ready data contracts and reporting
 
-### 2. **The AI Learns Patterns**
-   - "Patients like you found relief with these products"
-   - "This strain helps 87% of people with your symptoms"
-   - "Avoid these - they didn't help similar patients"
+### 2. **Self-Service Analytics Layer**
+   - Power BI semantic models with documented business logic
+   - KPI catalog (CAC, CVR, LTV, demand by channel/region)
+   - Attribution models showing marketing channel contribution
+   - Role-based security ensuring data governance
 
-### 3. **Patients Get Smart Recommendations**
-   - Enter your symptoms
-   - Get personalized recommendations in under 1 second
-   - See success rates for each recommendation
-   - Track what works for you
+### 3. **Data Quality & Governance**
+   - Schema-change monitors prevent downstream report breaks
+   - Automated data testing catches quality issues fast (MTTR < 8 hours)
+   - CI/CD deployment reduces broken reports by 70%
+   - Data contracts establish clear ownership and SLAs
 
-## Real Impact on Real People
+### 4. **Experimentation Framework**
+   - A/B testing infrastructure with statistical rigor
+   - Funnel and cohort analysis for Marketing and Product
+   - Holdout tests validate marketing channel effectiveness
+
+## Real Impact on Business Operations
 
 ### 📊 By The Numbers:
-- **1.4 million** treatment sessions analyzed
-- **30,000+** patients helped
-- **36,000+** different products evaluated
-- **25%** more patients found effective treatment
-- **Under 1 second** to get recommendations
+- **90%** self-serve adoption - teams answer their own questions
+- **70%** reduction in broken reports and incidents
+- **< 8 hours** MTTR for data quality issues (down from days)
+- **15+** marketing data sources unified into single platform
+- **50** users empowered with documented metrics and dashboards
 
 ### 💬 What This Means:
-- **For Patients**: Find relief faster without expensive trial and error
-- **For Doctors**: Make data-driven recommendations
-- **For Families**: Less suffering, faster recovery
-- **For Healthcare**: Lower costs, better outcomes
+- **For Marketing**: Clear attribution logic, experiment-ready infrastructure, channel performance insights
+- **For Executives**: Weekly operating dashboard with pricing models and demand forecasts
+- **For Product**: Funnel analysis and cohort tracking to inform roadmap
+- **For Finance**: Unified revenue and cost reporting, no more spreadsheet reconciliation
+- **For Compliance**: Audit-ready data contracts and automated reporting
 
-## The Technology (For Those Interested)
+## The Technology
 
-We used advanced machine learning to build three intelligent systems:
+Built on modern cloud-native data stack:
 
-1. **Treatment Predictor**: Predicts if a treatment will work before you try it
-2. **Recommendation Engine**: Finds products that helped similar patients  
-3. **Tolerance Detector**: Warns when a treatment stops being effective
-
-All running on Microsoft's cloud platform for speed and security.
+- **Infrastructure**: AWS (compute, storage, orchestration)
+- **BI Platform**: Power BI (semantic models, dashboards, self-serve)
+- **Data Engineering**: ETL pipelines with automated testing
+- **Governance**: Data contracts, RLS security, CI/CD deployment
+- **Analytics**: Attribution modeling, A/B testing, cohort analysis
 
 ## What Makes This Special
 
-### 🎯 **Personalized to You**
-Not generic advice - recommendations based on patients exactly like you
+### 🎯 **Self-Service First**
+Documented KPIs and business logic - users answer questions without IT
 
-### ⚡ **Instant Results**
-No waiting for appointments or test results - answers in under 1 second
+### ⚡ **Data Quality Focus**
+Monitors catch schema changes and quality issues before they break reports
 
-### 📈 **Gets Smarter Daily**
-Every patient experience makes the system better for the next person
+### 📈 **Analytics Roadmap Aligned to Business**
+Tied to acquisition lift, churn reduction, and channel optimization
 
-### 🔒 **Completely Private**
-All data is anonymous - we protect patient privacy above all
+### 🔒 **Governance Built In**
+Role-based security, data contracts, audit-ready compliance
 
-## Future Improvements
+## Business Impact
 
-- **Real-time Updates**: System updates as soon as new data comes in
-- **Symptom Tracking**: Automatic tracking through wearable devices
-- **Doctor Dashboard**: Tools for healthcare providers
-- **Expanded Conditions**: Adding more medical conditions beyond current scope
+Set analytics agenda with executives and Marketing, defining quarterly roadmap tied to:
+- Acquisition lift: Channel attribution insights optimized marketing spend
+- Churn reduction: Cohort analysis identified at-risk segments
+- Intake/triage: Demand forecasts and bottleneck analysis improved operations
 
-## The Bottom Line
-
-We turned millions of patient experiences into a smart system that helps people find relief faster. What used to take months of trial and error now takes seconds.
+What used to require IT requests and days of manual work now happens instantly through self-serve dashboards - freeing teams to focus on insights, not data wrangling.
 
 ---
 
-**Built with**: Microsoft Fabric • Machine Learning • Cloud Computing • Data Analytics
+**Built with**: AWS • Power BI • Data Engineering • Marketing Analytics • Self-Service BI
 
-**Impact**: Helping 30,000+ patients find effective treatments 25% more often
+**Impact**: 90% self-serve adoption, 70% fewer broken reports, marketing attribution driving channel optimization
