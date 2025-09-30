@@ -105,7 +105,7 @@ export default function Home() {
 
       <div className="absolute top-6 left-6 z-20">
         <button
-          onClick={() => goToChat('Tell me about your BI & AI expertise')}
+          onClick={() => goToChat('Tell me about your BI & Analytics expertise')}
           className="relative flex cursor-pointer items-center gap-2 rounded-full border bg-white/30 px-4 py-1.5 text-sm font-medium text-black shadow-md backdrop-blur-lg transition hover:bg-white/60 dark:border-white dark:text-white dark:hover:bg-neutral-800"
         >
           {/* Green pulse dot */}
@@ -132,7 +132,7 @@ export default function Home() {
           Hey, I'm Steve 👋
         </h2>
         <h1 className="text-4xl font-bold sm:text-5xl md:text-6xl lg:text-7xl">
-          BI & AI Leader
+          Business Intelligence Architect & Strategist
         </h1>
       </motion.div>
 
